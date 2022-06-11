@@ -1,5 +1,5 @@
 // import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join, isAbsolute, normalize} from 'path';
 import { stat } from 'fs/promises';
 
 // export const __filename = fileURLToPath(import.meta.url);
@@ -16,3 +16,20 @@ export const checkDirectory = async (path) => {
         return false;
     }
 };
+
+export const validateFilePath = async (path, currentDir) => {
+    try {
+        let filePath = normalize(path);
+        if (!isAbsolute(filePath))
+            filePath = join(currentDir, filePath);
+        const validFile = await stat(filePath);
+        if (validFile && !validFile.isDirectory()){
+            return filePath;
+        };
+        throw new Error('Wrong file');
+        
+    } catch (e) {
+        throw new Error('Wrong file');
+    }
+};
+
