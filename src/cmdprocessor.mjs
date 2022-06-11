@@ -2,7 +2,7 @@ import {lsCmd, cdCmd, upCmd } from './directories.mjs';
 import { catCmd, addCmd, rnCmd, cpmvCmd, rmCmd } from './fileoperations.mjs';
 import { osCmd } from './osfunctions.mjs';
 import { hashCmd } from './hash.mjs';
-import { compressCmd } from './compress.mjs';
+import { compressCmd, decompressCmd } from './compress.mjs';
 
 export const cmdProcess = async (cmd, user) => {
     try {
@@ -41,6 +41,8 @@ export const cmdProcess = async (cmd, user) => {
             await hashCmd(user);
             break;
         case 'decompress':
+            await decompressCmd(user);
+            break;
         case 'compress':
             await compressCmd(user);
             break;
