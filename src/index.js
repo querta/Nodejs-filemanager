@@ -24,8 +24,7 @@ export const user = new Data("Stranger");
                 if (user.cmd[0] == ".exit" || user.cmd[0] == "exit") rl.close();
                 else {
                     await cmdProcess(user.cmd, user);
-                    process.stdout.write(`You are currently in ${user.currentDir}${EOL}`);
-            
+                    process.stdout.write(`You are currently in ${user.currentDir}${EOL}`);            
                 }
             } catch(err) { console.log(err.message); }
         });

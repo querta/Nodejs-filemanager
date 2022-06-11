@@ -1,21 +1,19 @@
-import { createReadStream, createWriteStream } from 'fs';
+import { createReadStream, createWriteStream, read } from 'fs';
 import { writeFile, rename, open, unlink } from 'fs/promises';
-import { normalize, resolve, parse} from 'path';
-import { validateFilePath } from './utils.mjs';
-import { EOL } from 'os'
+import { normalize, resolve, parse, isAbsolute} from 'path';
+import { validateFilePath, checkDirectory } from './utils.mjs';
 
 export const catCmd = async (user) => {
-    try {
+    try {        
         let filePath = await validateFilePath(user.cmd[1], user.currentDir)
-        if (filePath){
+        return new Promise((success, reject) => {
             const readStream = createReadStream(filePath, 'utf-8');
-            readStream.pipe(process.stdout);
-            readStream.on('end', () => {
-                process.stdout.write(`You are currently in ${user.currentDir}${EOL}`);
-            });
-        }
+            readStream.on("error", () => reject(new Error('Operation failed. Permission denied')));
+            readStream.on('data', chunk => process.stdout.write(chunk));
+            readStream.on('end', () => success());
+    })
     } catch (e) {
-        throw new Error('Operation failed');
+        throw new Error('Invalid input');
     }
 };
 
@@ -49,17 +47,23 @@ export const cpmvCmd = async (user) => {
     try {
         let srcFilePath = await validateFilePath(user.cmd[1], user.currentDir)
         const srcFileName = parse(srcFilePath)['base'];
-        const dstFilePath = resolve(normalize(user.cmd[2]), srcFileName);
-        if (!dstFilePath || !srcFilePath) throw new Error ('Invalid Input');
-
-        const readStream = createReadStream(srcFilePath, 'utf-8');
-        const newFile = await open(dstFilePath, 'w');
-        await writeFile(dstFilePath, '');
-        readStream.on('data', async (chunk) => {
-            const writeStream = createWriteStream(dstFilePath, 'utf-8');
-            writeStream.write(chunk);
-            if (user.cmd[0] === "mv")
-                await unlink(srcFilePath);
+        let dstDir = await checkDirectory(user.cmd[2]);
+        if (!isAbsolute(dstDir))
+            dstDir = resolve(user.currentDir, dstDir);
+        const dstFilePath = resolve(dstDir, srcFileName)
+        return new Promise((success, reject) => {
+            const rs = createReadStream(srcFilePath);
+            rs.on("error", () => reject(new Error('Operation failed')));
+            rs.on('data', async (chunk) => {
+                const writeStream = createWriteStream(dstFilePath, 'utf-8');
+                writeStream.write(chunk);
+            });
+            rs.on('end', async () => {
+                console.log('aaaa');
+                if (user.cmd[0] === "mv")
+                    await unlink(srcFilePath);
+                success();
+            });
         });
     } catch (e) {
         throw new Error('Operation failed');

@@ -1,4 +1,4 @@
-import { readdir, stat } from 'fs/promises';
+import { readdir } from 'fs/promises';
 import { EOL } from 'os'
 import { normalize, resolve, sep} from 'path';
 import { checkDirectory } from './utils.mjs';
