@@ -1,5 +1,7 @@
 import {lsCmd, cdCmd, upCmd } from './direcories.mjs';
 import { catCmd, addCmd, rnCmd, cpmvCmd, rmCmd } from './fileoperations.mjs';
+import { osCmd } from './osfunctions.mjs';
+import { hashCmd } from './hash.mjs';
 
 export const cmdProcess = async (cmd, user) => {
     try {
@@ -31,8 +33,14 @@ export const cmdProcess = async (cmd, user) => {
         case 'rm':
             await rmCmd(user);
             break;
+        case 'os':
+            await osCmd(user);
+            break;
+        case 'hash':
+            await hashCmd(user);
+            break;
         default:
-            throw new Error('Invalid operation');
+            throw new Error('Invalid input');
         }
         
     } catch(err) {

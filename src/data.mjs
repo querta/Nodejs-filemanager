@@ -5,7 +5,6 @@ export class Data {
         process.chdir(homedir());
         this.name = name;
         this.currentDir = homedir();
-        this.lastDir = homedir();
         this.cmd = [];
     }
 }

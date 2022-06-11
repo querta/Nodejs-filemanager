@@ -1,7 +1,7 @@
 import { createReadStream, createWriteStream } from 'fs';
-import { stat, writeFile, rename, open, unlink } from 'fs/promises';
-import { normalize, join, resolve, isAbsolute, parse} from 'path';
-import { checkDirectory, validateFilePath } from './utils.mjs';
+import { writeFile, rename, open, unlink } from 'fs/promises';
+import { normalize, resolve, parse} from 'path';
+import { validateFilePath } from './utils.mjs';
 import { EOL } from 'os'
 
 export const catCmd = async (user) => {
@@ -30,7 +30,6 @@ export const addCmd = async (user) => {
     }
 };
 
-//   rn path_to_file new_filename
 export const rnCmd = async (user) => {
     try {
         let srcFile = await validateFilePath(user.cmd[1], user.currentDir)
@@ -46,8 +45,6 @@ export const rnCmd = async (user) => {
     }
 };
 
-//     cp path_to_file path_to_new_directory
-// cp a ./1
 export const cpmvCmd = async (user) => {
     try {
         let srcFilePath = await validateFilePath(user.cmd[1], user.currentDir)
@@ -68,7 +65,6 @@ export const cpmvCmd = async (user) => {
         throw new Error('Operation failed');
     }
 };
-
 
 export const rmCmd = async (user) => {
         try {

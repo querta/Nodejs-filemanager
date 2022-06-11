@@ -5,10 +5,12 @@ import { Data } from './data.mjs';
 import { cmdProcess } from './cmdprocessor.mjs';
 
 export const user = new Data("Stranger");
-// const waiter = async () => {
     try {
+        if (process.argv.length <= 2)
+            throw new Error ('Invalid input');
         if (process.argv[2].startsWith("--username="))
-        user.name =  process.argv[2].slice(11);
+            user.name =  process.argv[2].slice(11);
+
         const rl = readline.createInterface({ input, output, prompt: '' });
         process.stdout.write(`Welcome to the File Manager, ${user.name}!${EOL}${EOL}`);
         process.stdout.write(`You are currently in ${user.currentDir}${EOL}`);
@@ -35,5 +37,3 @@ export const user = new Data("Stranger");
     } catch(err) {
         console.log(err.message);
     }
-// }
-// waiter();
