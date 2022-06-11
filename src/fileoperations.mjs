@@ -15,7 +15,7 @@ export const catCmd = async (user) => {
             });
         }
     } catch (e) {
-        throw new Error('Invalid input');
+        throw new Error('Operation failed');
     }
 };
 
@@ -38,10 +38,10 @@ export const rnCmd = async (user) => {
         if ((srcFile && dstFile) && (srcFile != dstFile)){
             await rename(srcFile, dstFile);
         } else {
-            throw new Error('Invalid input');
+            throw new Error('Operation failed');
         }
     } catch (e) {
-        throw new Error('Invalid input');
+        throw new Error('Operation failed');
     }
 };
 
