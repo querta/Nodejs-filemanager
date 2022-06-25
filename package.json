@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-filemanager",
+  "version": "1.0.0",
+  "description": "# Assignment: File Manager",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/querta/Nodejs-filemanager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/querta/Nodejs-filemanager/issues"
+  },
+  "homepage": "https://github.com/querta/Nodejs-filemanager#readme"
+}
